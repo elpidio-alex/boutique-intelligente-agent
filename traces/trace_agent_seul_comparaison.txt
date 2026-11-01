@@ -1,0 +1,120 @@
+
+============================================================
+DEMANDE 1
+
+👤 Client : Je suis Koffi à Porto-Novo. Combien me coûtent 3 pots de beurre de karité livrés, et ça fait combien en nairas ?
+
+[étape 1] 🔧 chercher_produits
+   args     : {"mot_cle": "beurre de karité"}
+   résultat : {"produits": [{"ref": "P06", "nom": "Beurre de karité 500 g", "categorie": "soins", "prix_fcfa": 3500}]}
+
+[étape 1] 🔧 frais_livraison
+   args     : {"zone": "Porto-Novo"}
+   résultat : {"zone": "Porto-Novo", "frais_fcfa": 3000, "delai": "24 à 48 h"}
+
+[étape 2] 🔧 verifier_stock
+   args     : {"ref": "P06"}
+   résultat : {"ref": "P06", "nom": "Beurre de karité 500 g", "stock": 40, "disponible": true}
+
+[étape 3] 🔧 calculer_total
+   args     : {"zone": "Porto-Novo", "articles": [{"ref": "P06", "quantite": 3}]}
+   résultat : {"zone": "Porto-Novo", "articles": [{"ref": "P06", "nom": "Beurre de karité 500 g", "quantite": 3, "prix_unitaire_fcfa": 3500, "sous_total_fcfa": 10500}], "total_articles_fcfa": 10500, "frais_livraison_fcfa": 3000, "total_fcfa": 13500, "delai": "24 à 48 h"}
+
+[étape 4] 🔧 convertir_devise
+   args     : {"montant_fcfa": 13500, "devise": "NGN"}
+   résultat : {"montant_fcfa": 13500, "devise": "NGN", "taux": 2.286652, "montant_converti": 30869.8}
+
+🔍 évaluation : ✅ OK
+
+💬 Vendeur : Bonjour Koffi, 3 pots de beurre de karité 500 g (en stock) coûtent 10500 FCFA + livraison 3000 FCFA
+-> Total : 13500 FCFA (24 à 48 h)
+Soit environ 30 870 nairas.
+
+Souhaitez-vous commander ? Si oui, merci de me confirmer votre nom complet.
+
+📊 Appels LLM : 6 | temps LLM : 8.5 s | tokens entrée : 25109 | sortie : 844
+
+============================================================
+DEMANDE 2
+
+👤 Client : Je m'appelle Afi. Je veux 2 robes en wax et 1 sac en raphia, livrés à Calavi.
+
+[étape 1] 🔧 chercher_produits
+   args     : {"mot_cle": "robe wax"}
+   résultat : {"produits": [{"ref": "P01", "nom": "Pagne wax 6 yards", "categorie": "vêtements", "prix_fcfa": 12000}, {"ref": "P05", "nom": "Robe en wax", "categorie": "vêtements", "prix_fcfa": 22000}]}
+
+[étape 1] 🔧 chercher_produits
+   args     : {"mot_cle": "sac raphia"}
+   résultat : {"produits": [{"ref": "P03", "nom": "Sac en raphia", "categorie": "accessoires", "prix_fcfa": 7500}]}
+
+[étape 1] 🔧 frais_livraison
+   args     : {"zone": "Calavi"}
+   résultat : {"zone": "Calavi", "frais_fcfa": 2000, "delai": "24 à 48 h"}
+
+[étape 2] 🔧 verifier_stock
+   args     : {"ref": "P05"}
+   résultat : {"ref": "P05", "nom": "Robe en wax", "stock": 5, "disponible": true}
+
+[étape 2] 🔧 verifier_stock
+   args     : {"ref": "P03"}
+   résultat : {"ref": "P03", "nom": "Sac en raphia", "stock": 0, "disponible": false}
+
+[étape 3] 🔧 chercher_produits
+   args     : {"mot_cle": "accessoires"}
+   résultat : {"produits": [{"ref": "P03", "nom": "Sac en raphia", "categorie": "accessoires", "prix_fcfa": 7500}, {"ref": "P04", "nom": "Sandales en cuir", "categorie": "accessoires", "prix_fcfa": 9000}]}
+
+[étape 4] 🔧 verifier_stock
+   args     : {"ref": "P04"}
+   résultat : {"ref": "P04", "nom": "Sandales en cuir", "stock": 8, "disponible": true}
+
+[étape 5] 🔧 calculer_total
+   args     : {"zone": "Calavi", "articles": [{"ref": "P05", "quantite": 2}]}
+   résultat : {"zone": "Calavi", "articles": [{"ref": "P05", "nom": "Robe en wax", "quantite": 2, "prix_unitaire_fcfa": 22000, "sous_total_fcfa": 44000}], "total_articles_fcfa": 44000, "frais_livraison_fcfa": 2000, "total_fcfa": 46000, "delai": "24 à 48 h"}
+
+🔍 évaluation : ✅ OK
+
+💬 Vendeur : Bonjour Afi, avec plaisir.
+
+Le sac en raphia (7500 FCFA) est en rupture de stock. Je vous propose les sandales en cuir (9000 FCFA), disponibles.
+
+Pour les 2 robes en wax : 2 robes en wax 44000 FCFA + livraison 2000 FCFA -> Total : 46000 FCFA (24 à 48 h)
+
+Souhaitez-vous ajouter les sandales, ou confirmez-vous les 2 robes seules ?
+
+📊 Appels LLM : 7 | temps LLM : 12.3 s | tokens entrée : 31746 | sortie : 1831
+
+============================================================
+DEMANDE 3
+
+👤 Client : Vous avez des pagnes ? Combien ça fait en euros pour ma sœur à Paris ?
+
+[étape 1] 🔧 chercher_produits
+   args     : {"mot_cle": "pagne"}
+   résultat : {"produits": [{"ref": "P01", "nom": "Pagne wax 6 yards", "categorie": "vêtements", "prix_fcfa": 12000}]}
+
+[étape 2] 🔧 verifier_stock
+   args     : {"ref": "P01"}
+   résultat : {"ref": "P01", "nom": "Pagne wax 6 yards", "stock": 14, "disponible": true}
+
+[étape 3] 🔧 convertir_devise
+   args     : {"montant_fcfa": 12000, "devise": "EUR"}
+   résultat : {"montant_fcfa": 12000, "devise": "EUR", "taux": 0.001524, "montant_converti": 18.29}
+
+🔍 évaluation : ✅ OK
+
+💬 Vendeur : Bonjour, et bienvenue ! Oui, nous avons du pagne wax 6 yards à 12 000 FCFA, disponible en stock.
+
+Pour votre sœur à Paris, cela fait environ 18,29 EUR.
+
+Souhaitez-vous commander ? Dites-moi votre nom et votre zone de livraison à Cotonou ou ailleurs.
+
+📊 Appels LLM : 5 | temps LLM : 7.5 s | tokens entrée : 19149 | sortie : 703
+
+############################################################
+SYNTHÈSE - AGENT SEUL
+############################################################
+  demande 1 : 6 appels LLM | 9.2 s | 25109 tokens entrée | 844 sortie | 2.22 RODI
+  demande 2 : 7 appels LLM | 12.4 s | 31746 tokens entrée | 1831 sortie | 3.10 RODI
+  demande 3 : 5 appels LLM | 8.2 s | 19149 tokens entrée | 703 sortie | 1.72 RODI
+  TOTAL   : 18 appels LLM | 76004 tokens entrée | 3378 sortie | 7.03 RODI
+  MOYENNE : 6.0 appels LLM | temps de réponse moyen 9.9 s | coût moyen 2.34 RODI

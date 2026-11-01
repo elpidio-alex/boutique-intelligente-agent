@@ -1,0 +1,58 @@
+============================================================
+TEST 1 - Client : Vous avez des pagnes ? Combien ça fait en euros pour ma sœur à Paris ?
+============================================================
+
+[étape 1] 🔧 chercher_produits
+   args     : {"mot_cle": "pagne"}
+   résultat : {"produits": [{"ref": "P01", "nom": "Pagne wax 6 yards", "categorie": "vêtements", "prix_fcfa": 12000}]}
+
+[étape 2] 🔧 verifier_stock
+   args     : {"ref": "P01"}
+   résultat : {"ref": "P01", "nom": "Pagne wax 6 yards", "stock": 14, "disponible": true}
+
+[étape 2] 🔧 convertir_devise
+   args     : {"montant_fcfa": 12000, "devise": "EUR"}
+   résultat : {"montant_fcfa": 12000, "devise": "EUR", "taux": 0.001524, "montant_converti": 18.29}
+
+💬 Réponse : Oui, nous avons le *Pagne wax 6 yards* à 12 000 FCFA, et il est disponible en stock.
+
+En euros, cela fait environ 18,29 €.
+
+Souhaitez-vous le commander ? Si oui, merci de m'indiquer la quantité et la ville de livraison au Bénin.
+
+============================================================
+TEST 2 - Client : Livrez-moi à Lomé.
+============================================================
+
+[étape 1] 🔧 frais_livraison
+   args     : {"zone": "Lomé"}
+   résultat : {"erreur": "zone non desservie", "zones_desservies": ["Cotonou", "Akpakpa", "Fidjrossè", "Calavi", "Porto-Novo", "Ouidah"]}
+
+💬 Réponse : Bonjour, merci pour votre message. Malheureusement, nous ne livrons pas à Lomé pour le moment. Nos zones desservies sont : Cotonou, Akpakpa, Fidjrossè, Calavi, Porto-Novo et Ouidah.
+
+Si vous avez une personne à Cotonou ou dans l'une de ces villes, elle peut passer commande pour vous. Puis-je vous aider à choisir un pagne ou un vêtement ?
+
+============================================================
+TEST 3 - Client : C'est combien le sac en raphia ?
+============================================================
+
+[étape 1] 🔧 chercher_produits
+   args     : {"mot_cle": "sac"}
+   résultat : {"produits": [{"ref": "P03", "nom": "Sac en raphia", "categorie": "accessoires", "prix_fcfa": 7500}]}
+
+[étape 2] 🔧 verifier_stock
+   args     : {"ref": "P03"}
+   résultat : {"ref": "P03", "nom": "Sac en raphia", "stock": 0, "disponible": false}
+
+[étape 3] 🔧 chercher_produits
+   args     : {"mot_cle": "accessoires"}
+   résultat : {"produits": [{"ref": "P03", "nom": "Sac en raphia", "categorie": "accessoires", "prix_fcfa": 7500}, {"ref": "P04", "nom": "Sandales en cuir", "categorie": "accessoires", "prix_fcfa": 9000}]}
+
+[étape 4] 🔧 verifier_stock
+   args     : {"ref": "P04"}
+   résultat : {"ref": "P04", "nom": "Sandales en cuir", "stock": 8, "disponible": true}
+
+💬 Réponse : Bonjour, le sac en raphia coûte 7 500 FCFA. Malheureusement, il est actuellement en rupture de stock.
+
+Une alternative de la même catégorie : les *sandales en cuir* à 9 000 FCFA, disponibles en stock. Souhaitez-vous plus de détails ou passer commande ?
+

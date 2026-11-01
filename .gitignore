@@ -1,0 +1,7 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+test_evaluation.py
+test_regles_code.py
+test_outils.py

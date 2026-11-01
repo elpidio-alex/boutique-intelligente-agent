@@ -1,0 +1,157 @@
+
+============================================================
+DEMANDE 1
+
+👤 Client : Je suis Koffi à Porto-Novo. Combien me coûtent 3 pots de beurre de karité livrés, et ça fait combien en nairas ?
+
+➡️  Gérant -> vendeur : Client : Koffi, livraison à Porto-Novo. Demande : 3 pots de beurre de karité. Merci de donner le prix unitaire, la disponibilité en stock, et le total_fcfa livraison incluse pour Porto-Novo.
+
+[vendeur] [étape 1] 🔧 chercher_produits
+   args     : {"mot_cle": "beurre de karité"}
+   résultat : {"produits": [{"ref": "P06", "nom": "Beurre de karité 500 g", "categorie": "soins", "prix_fcfa": 3500}]}
+
+[vendeur] [étape 2] 🔧 verifier_stock
+   args     : {"ref": "P06"}
+   résultat : {"ref": "P06", "nom": "Beurre de karité 500 g", "stock": 40, "disponible": true}
+
+[vendeur] [étape 3] 🔧 calculer_total
+   args     : {"zone": "Porto-Novo", "articles": [{"ref": "P06", "quantite": 3}]}
+   résultat : {"zone": "Porto-Novo", "articles": [{"ref": "P06", "nom": "Beurre de karité 500 g", "quantite": 3, "prix_unitaire_fcfa": 3500, "sous_total_fcfa": 10500}], "total_articles_fcfa": 10500, "frais_livraison_fcfa": 3000, "total_fcfa": 13500, "delai": "24 à 48 h"}
+⬅️  vendeur -> Gérant : Beurre de karité 500 g (réf. P06) : prix unitaire 3 500 FCFA.
+Disponibilité : 40 en stock, la demande de 3 pots est couverte.
+Livraison à Porto-Novo : frais de livraison 3 000 FCFA, délai 24 à 48 h.
+Total pour 3 pots, livraison incluse : 13 500 FCFA (articles 10 500 + livraison 3 000).
+Aucune commande n'a été enregistrée : en attente de la confirmation explicite du client Koffi.
+
+[gérant] [étape 1] 🔧 demander_au_vendeur
+   args     : {"demande": "Client : Koffi, livraison à Porto-Novo. Demande : 3 pots de beurre de karité. Merci de donner le prix unitaire, la disponibilité en stock, et le total_fcfa livraison incluse pour Porto-Novo."}
+   résultat : "Beurre de karité 500 g (réf. P06) : prix unitaire 3 500 FCFA.\nDisponibilité : 40 en stock, la demande de 3 pots est couverte.\nLivraison à Porto-Novo : frais de livraison 3 000 FCFA, délai 24 à 48 h.\nTotal pour 3 pots, livraison incluse : 13 500 FCFA (articles 10 500 + livraison 3 000).\nAucune commande n'a été enregistrée : en attente de la confirmation explicite du client Koffi."
+
+➡️  Gérant -> logisticien : Convertir 13 500 FCFA en naira nigérian (NGN). Contexte : client Koffi, livraison à Porto-Novo, total de sa commande de 3 pots de beurre de karité livraison incluse. Merci de donner le montant converti en NGN.
+
+[logisticien] [étape 1] 🔧 convertir_devise
+   args     : {"montant_fcfa": 13500, "devise": "NGN"}
+   résultat : {"montant_fcfa": 13500, "devise": "NGN", "taux": 2.286652, "montant_converti": 30869.8}
+⬅️  logisticien -> Gérant : Conversion de 13 500 FCFA en naira nigérian : 30 869,8 NGN, au taux du jour de 2,286652 NGN pour 1 FCFA.
+Le montant de 13 500 FCFA est celui que vous m'avez donné, livraison incluse, pour la commande de Koffi (3 pots de beurre de karité, livraison à Porto-Novo).
+Je n'ai pas recalculé les frais de livraison, car vous ne m'avez demandé que la conversion.
+
+[gérant] [étape 2] 🔧 demander_au_logisticien
+   args     : {"demande": "Convertir 13 500 FCFA en naira nigérian (NGN). Contexte : client Koffi, livraison à Porto-Novo, total de sa commande de 3 pots de beurre de karité livraison incluse. Merci de donner le montant converti en NGN."}
+   résultat : "Conversion de 13 500 FCFA en naira nigérian : 30 869,8 NGN, au taux du jour de 2,286652 NGN pour 1 FCFA.\nLe montant de 13 500 FCFA est celui que vous m'avez donné, livraison incluse, pour la commande de Koffi (3 pots de beurre de karité, livraison à Porto-Novo).\nJe n'ai pas recalculé les frais de livraison, car vous ne m'avez demandé que la conversion."
+
+➡️  Gérant -> redacteur : Message WhatsApp pour Koffi, 50 mots maximum, en français. Faits à inclure : 3 pots de beurre de karité 500 g (réf. P06) disponibles en stock ; prix unitaire 3 500 FCFA ; livraison à Porto-Novo 3 000 FCFA, délai 24 à 48 h ; total livraison incluse 13 500 FCFA (articles 10 500 FCFA + livraison 3 000 FCFA) ; soit environ 30 870 NGN (naira nigérian). Terminer en demandant s'il souhaite confirmer la commande. Aucune commande n'est encore enregistrée.
+(C'est le premier message de la conversation : commencez par Bonjour.)
+⬅️  redacteur -> Gérant : Bonjour Koffi, les 3 pots de beurre de karité 500 g (réf. P06) sont en stock, à 3 500 FCFA l'unité.
+3 pots de beurre de karité 500 g (réf. P06) 10 500 FCFA + livraison 3 000 FCFA -> Total : 13 500 FCFA (24 à 
+
+[gérant] [étape 3] 🔧 demander_au_redacteur
+   args     : {"demande": "Message WhatsApp pour Koffi, 50 mots maximum, en français. Faits à inclure : 3 pots de beurre de karité 500 g (réf. P06) disponibles en stock ; prix unitaire 3 500 FCFA ; livraison à Porto-Novo 3 000 FCFA, délai 24 à 48 h ; total livraison incluse 13 500 FCFA (articles 10 500 FCFA + livraison 3 000 FCFA) ; soit environ 30 870 NGN (naira nigérian). Terminer en demandant s'il souhaite confirmer la commande. Aucune commande n'est encore enregistrée."}
+   résultat : "Bonjour Koffi, les 3 pots de beurre de karité 500 g (réf. P06) sont en stock, à 3 500 FCFA l'unité.\n3 pots de beurre de karité 500 g (réf. P06) 10 500 FCFA + livraison 3 000 FCFA -> Total : 13 500 FCFA (24 à "
+
+➡️  Gérant -> redacteur : Message WhatsApp pour Koffi, 50 mots maximum, en français, complet (ne pas tronquer). Faits à inclure : 3 pots de beurre de karité 500 g (réf. P06) disponibles en stock ; prix unitaire 3 500 FCFA ; livraison à Porto-Novo 3 000 FCFA, délai 24 à 48 h ; total livraison incluse 13 500 FCFA (articles 10 500 FCFA + livraison 3 000 FCFA) ; soit environ 30 870 NGN (naira nigérian). Terminer par une question demandant s'il souhaite confirmer la commande. Aucune commande n'est encore enregistrée.
+(C'est le premier message de la conversation : commencez par Bonjour.)
+⬅️  redacteur -> Gérant : Bonjour Koffi, les pots de beurre de karité 500 g (réf. P06) sont disponibles en stock, à 3 500 FCFA l'unité, avec livraison à Porto-Novo.
+3 pots de beurre de karité 500 g 10 500 FCFA + livraison 3 000 FCFA -> Total : 13 500 FCFA (24 à 48 h)
+Soit environ 30 870 NGN (naira nigérian). Aucune commande n'est encore enregistrée.
+Souhaitez-vous confirmer la commande ?
+
+[gérant] [étape 4] 🔧 demander_au_redacteur
+   args     : {"demande": "Message WhatsApp pour Koffi, 50 mots maximum, en français, complet (ne pas tronquer). Faits à inclure : 3 pots de beurre de karité 500 g (réf. P06) disponibles en stock ; prix unitaire 3 500 FCFA ; livraison à Porto-Novo 3 000 FCFA, délai 24 à 48 h ; total livraison incluse 13 500 FCFA (articles 10 500 FCFA + livraison 3 000 FCFA) ; soit environ 30 870 NGN (naira nigérian). Terminer par une question demandant s'il souhaite confirmer la commande. Aucune commande n'est encore enregistrée."}
+   résultat : "Bonjour Koffi, les pots de beurre de karité 500 g (réf. P06) sont disponibles en stock, à 3 500 FCFA l'unité, avec livraison à Porto-Novo.\n3 pots de beurre de karité 500 g 10 500 FCFA + livraison 3 000 FCFA -> Total : 13 500 FCFA (24 à 48 h)\nSoit environ 30 870 NGN (naira nigérian). Aucune commande n'est encore enregistrée.\nSouhaitez-vous confirmer la commande ?"
+
+[gérant] 🔍 évaluation : ✅ OK
+
+💬 Vendeur : Bonjour Koffi, les pots de beurre de karité 500 g (réf. P06) sont disponibles en stock, à 3 500 FCFA l'unité, avec livraison à Porto-Novo.
+3 pots de beurre de karité 500 g 10 500 FCFA + livraison 3 000 FCFA -> Total : 13 500 FCFA (24 à 48 h)
+Soit environ 30 870 NGN (naira nigérian). Aucune commande n'est encore enregistrée.
+Souhaitez-vous confirmer la commande ?
+
+📊 Appels LLM : 14 | temps LLM : 33.2 s | tokens entrée : 29130 | sortie : 6143
+
+============================================================
+DEMANDE 2
+
+👤 Client : Je m'appelle Afi. Je veux 2 robes en wax et 1 sac en raphia, livrés à Calavi.
+
+➡️  Gérant -> vendeur : Client : Afi. Demande de devis : 2 robes en wax et 1 sac en raphia, livraison à Calavi. Merci de confirmer le stock de chaque article, le prix unitaire, et le total en FCFA livraison incluse. Si un article est en rupture, proposer une alternative (nom, prix) et le total des seuls articles disponibles.
+
+[vendeur] [étape 1] 🔧 chercher_produits
+   args     : {"mot_cle": "robe wax"}
+   résultat : {"produits": [{"ref": "P01", "nom": "Pagne wax 6 yards", "categorie": "vêtements", "prix_fcfa": 12000}, {"ref": "P05", "nom": "Robe en wax", "categorie": "vêtements", "prix_fcfa": 22000}]}
+
+[vendeur] [étape 1] 🔧 chercher_produits
+   args     : {"mot_cle": "sac raphia"}
+   résultat : {"produits": [{"ref": "P03", "nom": "Sac en raphia", "categorie": "accessoires", "prix_fcfa": 7500}]}
+
+[vendeur] [étape 2] 🔧 verifier_stock
+   args     : {"ref": "P05"}
+   résultat : {"ref": "P05", "nom": "Robe en wax", "stock": 5, "disponible": true}
+
+[vendeur] [étape 2] 🔧 verifier_stock
+   args     : {"ref": "P03"}
+   résultat : {"ref": "P03", "nom": "Sac en raphia", "stock": 0, "disponible": false}
+
+[vendeur] [étape 3] 🔧 chercher_produits
+   args     : {"mot_cle": "accessoires"}
+   résultat : {"produits": [{"ref": "P03", "nom": "Sac en raphia", "categorie": "accessoires", "prix_fcfa": 7500}, {"ref": "P04", "nom": "Sandales en cuir", "categorie": "accessoires", "prix_fcfa": 9000}]}
+
+[vendeur] [étape 4] 🔧 verifier_stock
+   args     : {"ref": "P04"}
+   résultat : {"ref": "P04", "nom": "Sandales en cuir", "stock": 8, "disponible": true}
+
+[vendeur] [étape 5] 🔧 calculer_total
+   args     : {"zone": "Calavi", "articles": [{"ref": "P05", "quantite": 2}]}
+   résultat : {"zone": "Calavi", "articles": [{"ref": "P05", "nom": "Robe en wax", "quantite": 2, "prix_unitaire_fcfa": 22000, "sous_total_fcfa": 44000}], "total_articles_fcfa": 44000, "frais_livraison_fcfa": 2000, "total_fcfa": 46000, "delai": "24 à 48 h"}
+⬅️  vendeur -> Gérant : Client Afi, devis pour Calavi :
+
+Robe en wax (P05) : stock 5, disponible, 22 000 FCFA l'unité ; 2 demandées soit 44 000 FCFA.
+Sac en raphia (P03) : en rupture, stock 0, prix 7 500 FCFA.
+Alternative de la même catégorie (accessoires) : Sandales en cuir (P04), 9 000 FCFA, stock 8, disponible.
+Total des articles disponibles (2 robes) livraison Calavi incluse : 46 000 FCFA (frais de livraison 2 000 FCFA), délai 24 à 48 h.
+
+[gérant] [étape 1] 🔧 demander_au_vendeur
+   args     : {"demande": "Client : Afi. Demande de devis : 2 robes en wax et 1 sac en raphia, livraison à Calavi. Merci de confirmer le stock de chaque article, le prix unitaire, et le total en FCFA livraison incluse. Si un article est en rupture, proposer une alternative (nom, prix) et le total des seuls articles disponibles."}
+   résultat : "Client Afi, devis pour Calavi :\n\nRobe en wax (P05) : stock 5, disponible, 22 000 FCFA l'unité ; 2 demandées soit 44 000 FCFA.\nSac en raphia (P03) : en rupture, stock 0, prix 7 500 FCFA.\nAlternative de la même catégorie (accessoires) : Sandales en cuir (P04), 9 000 FCFA, stock 8, disponible.\nTotal des articles disponibles (2 robes) livraison Calavi incluse : 46 000 FCFA (frais de livraison 2 000 FCFA), délai 24 à 48 h."
+
+➡️  Gérant -> redacteur : Message WhatsApp pour Afi (50 mots maximum), en français, ton chaleureux. Faits à inclure : 2 robes en wax (P05) à 22 000 FCFA l'unité, soit 44 000 FCFA. Le sac en raphia (P03) est en rupture de stock. Alternative proposée : sandales en cuir (P04) à 9 000 FCFA, en stock. Total des 2 robes livrées à Calavi, livraison incluse (2 000 FCFA) : 46 000 FCFA. Délai de livraison : 24 à 48 h. Demander à Afi si elle confirme cette commande (2 robes) ou souhaite les sandales en remplacement du sac.
+(C'est le premier message de la conversation : commencez par Bonjour.)
+
+[gérant] [étape 2] 🔧 demander_au_redacteur
+   args     : {}
+   résultat : {"erreur": "Error code: 402 - {'error': {'message': 'API key monthly RODI quota exceeded', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_balance'}}"}
+Traceback (most recent call last):
+  File "C:\Users\amous\Desktop\Bootcamp RodiumAI\Module 7\Nouveau dossier\multi_agents.py", line 286, in <module>
+    comparer()
+    ~~~~~~~~^^
+  File "C:\Users\amous\Desktop\Bootcamp RodiumAI\Module 7\Nouveau dossier\multi_agents.py", line 254, in comparer
+    tour(nouvelle_conversation(), demande)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\amous\Desktop\Bootcamp RodiumAI\Module 7\Nouveau dossier\multi_agents.py", line 238, in tour
+    reponse = run(
+        messages, max_steps=10, agent="gérant",
+        schemas=SCHEMAS_GERANT, fonctions=FONCTIONS_GERANT,
+        evaluer=evaluer_gerant,
+    )
+  File "C:\Users\amous\Desktop\Bootcamp RodiumAI\Module 7\Nouveau dossier\agent_core.py", line 104, in run
+    msg = appeler_llm(messages, schemas)               # 1. PENSER
+  File "C:\Users\amous\Desktop\Bootcamp RodiumAI\Module 7\Nouveau dossier\agent_core.py", line 68, in appeler_llm
+    reponse = client.chat.completions.create(**kwargs)
+  File "C:\Users\amous\AppData\Local\Programs\Python\Python314\Lib\site-packages\openai\_utils\_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\amous\AppData\Local\Programs\Python\Python314\Lib\site-packages\openai\resources\chat\completions\completions.py", line 1318, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/chat/completions",
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<53 lines>...
+        stream_cls=Stream[ChatCompletionChunk],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\amous\AppData\Local\Programs\Python\Python314\Lib\site-packages\openai\_base_client.py", line 1474, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\amous\AppData\Local\Programs\Python\Python314\Lib\site-packages\openai\_base_client.py", line 1247, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.APIStatusError: Error code: 402 - {'error': {'message': 'API key monthly RODI quota exceeded', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_balance'}}
