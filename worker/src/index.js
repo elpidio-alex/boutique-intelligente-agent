@@ -158,6 +158,7 @@ export default {
     const md = evt.messageData || {};
     const texte = md.textMessageData?.textMessage ?? md.extendedTextMessageData?.text;
     if (!texte) return new Response("ignoré");
+    if (!evt.idMessage) return new Response("ignoré");
 
     // 3. Dédoublonnage : un idMessage déjà vu ne déclenche jamais deux réponses.
     const r = await env.DB

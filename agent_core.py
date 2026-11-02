@@ -148,4 +148,4 @@ def run(messages, max_steps=8, approuver=None, outils_sensibles=(), evaluer=None
                 "content": json.dumps(resultat, ensure_ascii=False),
             })
 
-    return "Limite d'étapes atteinte, je n'ai pas pu terminer. Réessayez ou contactez Afi."
+    return "Limite d'étapes atteinte, je n'ai pas pu terminer. Réessayez ou contactez La responsable de la boutique."

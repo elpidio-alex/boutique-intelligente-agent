@@ -150,6 +150,8 @@ async function frais_livraison({ zone }, { env }) {
 }
 
 async function convertir_devise({ montant_fcfa, devise }) {
+  const montant = Number(montant_fcfa);
+  if (!Number.isFinite(montant) || montant <= 0) return { erreur: "montant invalide : un nombre positif est attendu" };
   const code = String(devise || "").toUpperCase().trim();
   let data;
   try {
@@ -201,22 +203,34 @@ async function creer_commande({ nom_client, lignes, zone, total_fcfa }, { env, c
       erreur: `le total de ${calc.total_fcfa} FCFA n'a pas encore été annoncé au client : annonce-le, demande confirmation et attends son accord avant de créer la commande`,
     };
   }
-  
+
   const nom = nom_client || "client";
-  const r = await env.DB
-    .prepare("INSERT INTO commandes (client, nom_client, lignes, zone, total, statut, cree_le) VALUES (?, ?, ?, ?, ?, 'en_attente', ?)")
-    .bind(chatId, nom, JSON.stringify(calc.lignes), calc.zone, calc.total_fcfa, Date.now())
-    .run();
-  const id = r.meta.last_row_id;
+  let id;
+  try {
+    const r = await env.DB
+      .prepare("INSERT INTO commandes (client, nom_client, lignes, zone, total, statut, cree_le) VALUES (?, ?, ?, ?, ?, 'en_attente', ?)")
+      .bind(chatId, nom, JSON.stringify(calc.lignes), calc.zone, calc.total_fcfa, Date.now())
+      .run();
+    id = r.meta.last_row_id;
+  } catch {
+    return { erreur: "une commande de ce client attend déjà la validation de la responsable de la boutique" };
+  }
 
   const resume = calc.lignes.map((l) => `${l.quantite} × ${l.nom}`).join(", ");
-  await envoyer(env, env.AFI_CHAT_ID, `Commande #${id} (${nom}) : ${resume}, livraison ${calc.zone}, ${fcfa(calc.total_fcfa)}. Répondez OUI ${id} ou NON ${id}.`);
+  let envoye = false;
+  try {
+    envoye = await envoyer(env, env.AFI_CHAT_ID, `Commande #${id} (${nom}) : ${resume}, livraison ${calc.zone}, ${fcfa(calc.total_fcfa)}. Répondez OUI ${id} ou NON ${id}.`);
+  } catch {}
+  if (!envoye) {
+    await env.DB.prepare("DELETE FROM commandes WHERE id = ?").bind(id).run();
+    return { erreur: "la demande de validation n'a pas pu être transmise ; demander au client de réessayer dans quelques minutes" };
+  }
 
   return {
     commande_id: id,
     statut: "en_attente_de_validation",
     total_fcfa: calc.total_fcfa,
-    message: "Afi a reçu la demande de validation ; le client sera prévenu du résultat.",
+    message: "Demande transmise à la responsable de la boutique. Annonce au client, en le vouvoyant, que sa commande est transmise pour validation et qu'il sera prévenu du résultat.",
   };
 }
 

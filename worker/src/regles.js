@@ -47,8 +47,8 @@ export function verifierRegles(texte, { montants, totalAttendu, premierMessage }
 
   // 5. Pas de markdown, pas de taux de change cité.
   if (/\*\*|__|^#{1,6}\s|```/m.test(texte)) erreurs.push("pas de markdown : un seul astérisque pour le gras");
-  if (/\btaux\b/.test(norm(texte))) erreurs.push("ne pas citer le taux de change");
-
+  if (/\btaux\s+(de\s+)?(change|conversion|du\s+jour)\b|\bau\s+taux\b/.test(norm(texte))) erreurs.push("ne pas citer le taux de change");
+  
   // 6. « Bonjour » seulement au premier message ; formulations neutres.
   if (!premierMessage && norm(texte).trim().startsWith("bonjour")) erreurs.push("« Bonjour » uniquement au premier message");
   const mots = norm(texte).split(/[^a-z]+/);
