@@ -111,7 +111,7 @@ Principes de conception :
 | Commande non voulue | Validation humaine avant `creer_commande` : le programme demande « Valider la commande ? [o/N] ». Un refus est renvoyé à l'agent comme une observation, et il doit le dire au client |
 | Perte d'état | Stock et commandes sont persistés dans `data.json`. Une commande validée décrémente le stock |
 | Chiffre inventé | Évaluation à deux niveaux avant chaque réponse finale (section 6) |
-| Injection de prompt | Les prix viennent des outils, jamais du message du client |
+| Injection de prompt : Worker : tout montant absent des outils est refusé par une règle en code. Python : les prix viennent des outils ; l’évaluation tolère les nombres écrits par le client, seul le prompt protège de l’injection | Les prix viennent des outils, jamais du message du client |
 | Fuite de clé | La clé RodiumAI est dans `.env` (exclu du dépôt), jamais dans le code |
 
 ## 6. Évaluation avant la réponse finale
@@ -216,6 +216,7 @@ Sept tests de production ont été joués avec des téléphones distincts pour l
 - Python : si une réponse est refusée après 2 corrections, `run()` la renvoie quand même. La trace du multi-agents en donne un exemple (demande 2, réponse de 95 mots renvoyée sans validation). La version Worker envoie un message de repli à la place. Cette différence est connue ; elle n'a pas été modifiée pour ne pas invalider les mesures du tableau.
 - Palier 1 : `etape1_agent.py` peut créer des commandes sans validation humaine, la validation est ajoutée au palier 2.
 - Dans le multi-agents, la phrase « Livraison à Porto-Novo, soit environ X NGN » est ambiguë : le montant converti est celui du total. Piste d'amélioration pour le Rédacteur.
+- En Python, verifier_montants accepte les nombres écrits par le client ; la version Worker est plus stricte.
 
 **Pistes**
 
@@ -229,9 +230,8 @@ Sept tests de production ont été joués avec des téléphones distincts pour l
 | Fichier | Contenu |
 |---|---|
 | `traces/trace_palier1.txt` | Les 3 tests du palier 1 avec évaluation |
-| `traces/trace_agent_seul_comparaison.txt` | Mesures de l'agent seul (3 demandes, 2 passages) |
+| `traces/trace_agent_seul_comparaison.txt` | Mesures de l'agent seul (3 demandes, 1 passages) |
 | `traces/trace_multi_agents_v2.txt` | Mesures du multi-agents corrigé |
-| `traces/trace_afi_refus_puis_acceptation.txt` | Scénario d'Afi : refus puis acceptation de la validation |
 
 Pour reproduire : `py etape2_agent.py reset`, lancer les commandes de la section 7, puis `py etape2_agent.py reset`. Les durées et les coûts varient légèrement d'un passage à l'autre.
 

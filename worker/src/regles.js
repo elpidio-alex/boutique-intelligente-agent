@@ -17,7 +17,7 @@ export function collecterMontants(resultats) {
 }
 
 const RE_FCFA = /(\d{1,3}(?:[\s\u00a0\u202f.]\d{3})+|\d+)\s*(?:FCFA|F\s?CFA|francs?\s+CFA|CFA)/gi;
-const RE_DEV = /(\d+(?:[\s\u00a0\u202f]\d{3})*(?:[.,]\d+)?)\s*(?:€|EUR\b|euros?\b|USD\b|\$|dollars?\b|NGN\b|₦|nairas?\b|GBP\b|£|livres?\b|CAD\b|GHS\b|cedis?\b)/gi;
+const RE_DEV = /(\d+(?:[\s\u00a0\u202f]\d{3})*(?:[.,]\d+)?)\s*(?:€|EUR\b|euros?\b|USD\b|\$|dollars?\b|NGN\b|₦|nairas?\b|GBP\b|£|CAD\b|GHS\b|cedis?\b)/gi;
 const INTERDITS = new Set(["ravi", "ravie", "desole", "desolee", "enchante", "enchantee", "heureux", "heureuse"]);
 
 export function verifierRegles(texte, { montants, totalAttendu, premierMessage }) {
@@ -48,7 +48,7 @@ export function verifierRegles(texte, { montants, totalAttendu, premierMessage }
   // 5. Pas de markdown, pas de taux de change cité.
   if (/\*\*|__|^#{1,6}\s|```/m.test(texte)) erreurs.push("pas de markdown : un seul astérisque pour le gras");
   if (/\btaux\s+(de\s+)?(change|conversion|du\s+jour)\b|\bau\s+taux\b/.test(norm(texte))) erreurs.push("ne pas citer le taux de change");
-  
+
   // 6. « Bonjour » seulement au premier message ; formulations neutres.
   if (!premierMessage && norm(texte).trim().startsWith("bonjour")) erreurs.push("« Bonjour » uniquement au premier message");
   const mots = norm(texte).split(/[^a-z]+/);

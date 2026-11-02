@@ -212,10 +212,13 @@ async function creer_commande({ nom_client, lignes, zone, total_fcfa }, { env, c
       .bind(chatId, nom, JSON.stringify(calc.lignes), calc.zone, calc.total_fcfa, Date.now())
       .run();
     id = r.meta.last_row_id;
-  } catch {
-    return { erreur: "une commande de ce client attend déjà la validation de la responsable de la boutique" };
+  } catch (e) {
+    if (String(e.message).includes("UNIQUE")) {
+      return { erreur: "une commande de ce client attend déjà la validation de la responsable de la boutique" };
+    }
+    console.log("erreur insertion commande", e.message);
+    return { erreur: "erreur interne, réessayer dans quelques instants" };
   }
-
   const resume = calc.lignes.map((l) => `${l.quantite} × ${l.nom}`).join(", ");
   let envoye = false;
   try {
