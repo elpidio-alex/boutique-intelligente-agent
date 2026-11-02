@@ -1,0 +1,13 @@
+{
+  "name": "boutique-intelligente",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-01",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "boutique-db",
+      "database_id": "0e7154a4-5d7e-4915-8f1f-6d74b4739557"
+    }
+  ],
+  "observability": { "enabled": true }
+}
