@@ -2,11 +2,6 @@
 Source : npx wrangler tail. Les numéros sont tronqués par le Worker (5 premiers chiffres).
 Remarque : tail affiche parfois "doublon" avant "message_recu" car les requêtes sont traitées en parallèle.
 
-=== TESTS 3 et 4 : validation d'Afi (extraits disponibles) ===
-(log) {"evt":"validation","commande":1,"decision":"NON"}
-(log) {"evt":"validation","commande":2,"decision":"OUI"}
-Base après le test 4 : P05 stock 5 -> 3 ; commande 1 = refusee, commande 2 = validee.
-
 === TEST 2 : scénario d'Afi, étape 1 (rupture du sac, total annoncé) ===
 POST https://boutique-intelligente.boutique-intelligente.workers.dev/ - Ok @ 02/11/2026 08:39:27
   (log) {"evt":"message_recu","client":"22898…","longueur":77}
